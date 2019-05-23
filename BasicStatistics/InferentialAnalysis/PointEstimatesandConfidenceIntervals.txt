@@ -9,19 +9,19 @@ POINT ESTIMATES
 Point estimates are estimates of population parameters based on sample data. For instance, if we wanted to know the average age of registered voters in the U.S., we could take a survey of registered voters and then use the average age of the respondents as a point estimate of the average age of the population as a whole. The average of a sample is known as the sample mean.
 
 Let`s investigate point estimates by generating a population of random age data and then drawing a sample from it to estimate the mean:
+
 np.random.seed(10)
 population_ages1 = stats.poisson.rvs(loc=18, mu=35, size=150000)
 population_ages2 = stats.poisson.rvs(loc=18, mu=10, size=100000)
 population_ages = np.concatenate((population_ages1, population_ages2))
-
 population_ages.mean()
 >>>43.002372000000001
+
+
 np.random.seed(6)
 sample_ages = np.random.choice(a= population_ages,
                                size=500)            # Sample 1000 values
-
 print ( sample_ages.mean() )                         # Show sample mean
-
 population_ages.mean() - sample_ages.mean()   # Check difference between means
 >>>42.388
 >>>0.61437200000000303
@@ -42,6 +42,30 @@ demo_sample = random.sample(population_races, 1000)   # Sample 1000 values
 for race in set(demo_sample):
     print( race + " proportion estimate:" )
     print( demo_sample.count(race)/1000 )
+for race in set(population_races):
+    print( race + " proportion estimate:" )
+    print( population_races.count(race)/250000 )
+hispanic proportion estimate:
+0.192
+white proportion estimate:
+0.379
+black proportion estimate:
+0.231
+other proportion estimate:
+0.099
+asian proportion estimate:
+0.099
+hispanic proportion estimate:
+0.2
+white proportion estimate:
+0.4
+black proportion estimate:
+0.2
+other proportion estimate:
+0.1
+asian proportion estimate:
+0.1
+"Notice that the proportion estimates are close to the true underlying population proportions."
 -----------------------------------------------------------------------
 SAMPLING DISTRIBUTIONS AND THE CENTRAL LIMIT THEOREM
 -----------------------------------------------------------------------
@@ -50,6 +74,36 @@ pd.DataFrame(population_ages).hist(bins=58,
                                   figsize=(9,9))
 
 print( stats.skew(population_ages) )
+>>>-0.12008483603917186
+
+pd.DataFrame(sample_ages).hist(bins=58,
+                                  range=(17.5,75.5),
+                                  figsize=(9,9))
+
+print( stats.skew(sample_ages) )
+>>>-0.056225282585406065
+"The sample has roughly the same shape as the underlying population. This suggests that we can't apply techniques that assume a normal distribution to this data set, since it is not normal. In reality, we can, thanks the central limit theorem."
+
+
+
+
+np.random.seed(10)
+point_estimates = []         # Make empty list to hold point estimates
+for x in range(200):         # Generate 200 samples
+    sample = np.random.choice(a= population_ages, size=500)
+    point_estimates.append( sample.mean() )
+    
+pd.DataFrame(point_estimates).plot(kind="density",  # Plot sample mean density
+                                   figsize=(9,9),
+                                   xlim=(41,45))  
+"The sampling distribution appears to be roughly normal, despite the bimodal population distribution that the samples were drawn from." 
+"In addition, the mean of the sampling distribution approaches the true population mean:" 
+
+
+
+population_ages.mean() - np.array(point_estimates).mean()
+-0.084407999999996264
+"The more samples we take, the better our estimate of the population parameter is likely to be."
 -----------------------------------------------------------------------
 CONFIDENCE INTERVALS
 -----------------------------------------------------------------------
