@@ -1,0 +1,98 @@
+http://hamelg.blogspot.com/2015/11/python-for-data-analysis-part-21.html?view=timeslide
+-----------------------------------------------------------------
+MEASURES OF CENTER
+-----------------------------------------------------------------
+Measures of center are statistics that give us a sense of the "middle" of a numeric variable. 
+In other words, centrality measures give you a sense of a typical value you`d expect to see. 
+Common measures of center include the mean, median and mode.
+df.mean()                 # Get the mean of each column
+df.mean(axis=1)           # Get the mean of each row
+df.median()               # Get the median of each column
+df.median(axis=1)         # Get the median of each row
+
+# density plot for mean and median:
+norm_data = pd.DataFrame(np.random.normal(size=100000))
+
+norm_data.plot(kind="density",figsize=(10,10))
+
+
+# Plot black line at mean
+plt.vlines(norm_data.mean(),ymin=0, ymax=0.4,linewidth=5.0)
+
+# Plot red line at median
+plt.vlines(norm_data.median(),ymin=0, ymax=0.4, linewidth=2.0,color="red")
+
+# The mode of a variable is simply the value that appears most frequently. Unlike mean and median, you can take the mode of a categorical variable and it is possible to have multiple modes.
+df.mode()
+-----------------------------------------------------------------
+MEASURES OF SPREAD
+-----------------------------------------------------------------
+Measures of spread (dispersion) are statistics that describe how data varies. While measures of center give us an 
+idea of the typical value, measures of spread give us a sense of how much the data tends to diverge from the typical value.
+
+#Range is the distance between the maximum and minimum observations:
+max(mtcars["mpg"]) - min(mtcars["mpg"])
+
+#A summary of several percentiles can be used to describe a variable's spread. "FIVE NUMBER SUMMARY"
+five_num = [mtcars["mpg"].quantile(0),   
+            mtcars["mpg"].quantile(0.25),
+            mtcars["mpg"].quantile(0.50),
+            mtcars["mpg"].quantile(0.75),
+            mtcars["mpg"].quantile(1)]
+df["mpg"].describe()
+
+#Interquartile (IQR) range is another common measure of spread. IQR is the distance between the 3rd quartile and the 1st quartile:
+mtcars["mpg"].quantile(0.75) - mtcars["mpg"].quantile(0.25)
+
+#boxplots visual representations of the five number summary and IQR:
+mtcars.boxplot(column="mpg",return_type='axes',figsize=(8,8))
+
+plt.text(x=0.74, y=22.25, s="3rd Quartile")
+plt.text(x=0.8, y=18.75, s="Median")
+plt.text(x=0.75, y=15.5, s="1st Quartile")
+plt.text(x=0.9, y=10, s="Min")
+plt.text(x=0.9, y=33.5, s="Max")
+plt.text(x=0.7, y=19.5, s="IQR", rotation=90, size=25)
+
+#The variance of a distribution is the average of the squared deviations (differences) from the mean.
+mtcars["mpg"].var()
+
+#The standard deviation is the square root of the variance. Standard deviation can be more interpretable than variance, 
+#since the standard deviation is expressed in terms of the same units as the variable in question while variance is expressed 
+#in terms of units squared.
+mtcars["mpg"].std()
+#Since variance and standard deviation are both derived from the mean, they are susceptible to the influence of data skew and outliers.
+
+#MEDIAN ABSOLUTE DEVIATION is an alternative measure of spread based on the median, which inherits the median`s robustness against 
+#the influence of skew and outliers. It is the median of the absolute value of the deviations from the median
+abs_median_devs = abs(mtcars["mpg"] - mtcars["mpg"].median())
+abs_median_devs.median() * 1.4826
+#*Note: The MAD is often multiplied by a scaling factor of 1.4826.
+
+
+-----------------------------------------------------------------
+SKEWNESS AND KURTOSIS
+-----------------------------------------------------------------
+Beyond measures of center and spread, descriptive statistics include measures that give you a sense of the shape of a distribution. 
+Skewness measures the skew or asymmetry of a distribution while kurtosis measures the "peakedness" of a distribution. 
+They are essentially just statistics that take the idea of variance a step further: while variance involves squaring deviations from the 
+mean, skewness involves cubing deviations from the mean and kurtosis involves raising deviations from the mean to the 4th power.
+
+mtcars["mpg"].skew()  # Check skewness
+mtcars["mpg"].kurt()  # Check kurtosis
+
+norm_data = np.random.normal(size=100000)
+skewed_data = np.concatenate((np.random.normal(size=35000)+2, np.random.exponential(size=65000)), axis=0)
+uniform_data = np.random.uniform(0,2, size=100000)
+peaked_data = np.concatenate((np.random.exponential(size=50000),np.random.exponential(size=50000)*(-1)),axis=0)
+
+data_df = pd.DataFrame({"norm":norm_data,"skewed":skewed_data,"uniform":uniform_data,"peaked":peaked_data})
+
+data_df.skew()
+data_df.kurt()
+
+
+
+
+
+
