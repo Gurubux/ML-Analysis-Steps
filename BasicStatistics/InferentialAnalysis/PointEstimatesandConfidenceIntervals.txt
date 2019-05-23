@@ -9,10 +9,47 @@ POINT ESTIMATES
 Point estimates are estimates of population parameters based on sample data. For instance, if we wanted to know the average age of registered voters in the U.S., we could take a survey of registered voters and then use the average age of the respondents as a point estimate of the average age of the population as a whole. The average of a sample is known as the sample mean.
 
 Let`s investigate point estimates by generating a population of random age data and then drawing a sample from it to estimate the mean:
+np.random.seed(10)
+population_ages1 = stats.poisson.rvs(loc=18, mu=35, size=150000)
+population_ages2 = stats.poisson.rvs(loc=18, mu=10, size=100000)
+population_ages = np.concatenate((population_ages1, population_ages2))
+
+population_ages.mean()
+>>>43.002372000000001
+np.random.seed(6)
+sample_ages = np.random.choice(a= population_ages,
+                               size=500)            # Sample 1000 values
+
+print ( sample_ages.mean() )                         # Show sample mean
+
+population_ages.mean() - sample_ages.mean()   # Check difference between means
+>>>42.388
+>>>0.61437200000000303
+#Our point estimate based on a sample of 500 individuals underestimates the true population mean by 0.6 years, but it is close. 
+#This illustrates an important point: we can get a fairly accurate estimate of a large population by sampling a relatively small
+# subset of individuals.
+
+
+
+
+random.seed(10)
+population_races = (["white"]*100000) + (["black"]*50000) +\
+                   (["hispanic"]*50000) + (["asian"]*25000) +\
+                   (["other"]*25000)
+    
+demo_sample = random.sample(population_races, 1000)   # Sample 1000 values
+
+for race in set(demo_sample):
+    print( race + " proportion estimate:" )
+    print( demo_sample.count(race)/1000 )
 -----------------------------------------------------------------------
 SAMPLING DISTRIBUTIONS AND THE CENTRAL LIMIT THEOREM
 -----------------------------------------------------------------------
+pd.DataFrame(population_ages).hist(bins=58,
+                                  range=(17.5,75.5),
+                                  figsize=(9,9))
 
+print( stats.skew(population_ages) )
 -----------------------------------------------------------------------
 CONFIDENCE INTERVALS
 -----------------------------------------------------------------------
