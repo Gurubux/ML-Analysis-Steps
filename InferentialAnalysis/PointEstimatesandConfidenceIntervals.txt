@@ -1,0 +1,27 @@
+POINT ESTIMATES AND CONFIDENCE INTERVALSINFERENTIAL STATISTICS
+Inferential Analysis
+	Statistical inference is the process of analyzing sample data to gain insight into the population from which the data was collected and  to investigate differences between data samples.
+	For example, leading up to U.S. presidential elections it could be very useful to know the political leanings of every single eligible voter, but surveying every voter is not feasible. Instead, we could poll some subset of the population,  such as a thousand registered voters, and use that data to make inferences about the population as a whole.
+
+-----------------------------------------------------------------------
+POINT ESTIMATES
+-----------------------------------------------------------------------
+Point estimates are estimates of population parameters based on sample data. For instance, if we wanted to know the average age of registered voters in the U.S., we could take a survey of registered voters and then use the average age of the respondents as a point estimate of the average age of the population as a whole. The average of a sample is known as the sample mean.
+
+Let`s investigate point estimates by generating a population of random age data and then drawing a sample from it to estimate the mean:
+-----------------------------------------------------------------------
+POINT ESTIMATES
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+POINT ESTIMATES
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+POINT ESTIMATES
+-----------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------
+POINT ESTIMATES
+-----------------------------------------------------------------------
