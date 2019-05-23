@@ -10,11 +10,11 @@ Point estimates are estimates of population parameters based on sample data. For
 
 Let`s investigate point estimates by generating a population of random age data and then drawing a sample from it to estimate the mean:
 -----------------------------------------------------------------------
-POINT ESTIMATES
+SAMPLING DISTRIBUTIONS AND THE CENTRAL LIMIT THEOREM
 -----------------------------------------------------------------------
 
 -----------------------------------------------------------------------
-POINT ESTIMATES
+CONFIDENCE INTERVALS
 -----------------------------------------------------------------------
 
 -----------------------------------------------------------------------
