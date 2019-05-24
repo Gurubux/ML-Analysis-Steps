@@ -1,0 +1,28 @@
+HYPOTHESIS TESTING AND THE T-TEST
+Statistical hypothesis testing is a framework for determining whether observed data deviates from what is expected.
+python`s scipy.stats library contains an array of functions that make it easy to carry out hypothesis tests.
+------------------------------------------------------
+HYPOTHESIS TESTING BASICS
+------------------------------------------------------
+
+
+------------------------------------------------------
+ONE-SAMPLE T-TEST
+------------------------------------------------------
+
+
+------------------------------------------------------
+TWO-SAMPLE T-TEST
+------------------------------------------------------
+
+
+
+------------------------------------------------------
+PAIRED T-TEST
+------------------------------------------------------
+
+
+
+------------------------------------------------------
+TYPE I AND TYPE II ERROR
+------------------------------------------------------
