@@ -1,5 +1,6 @@
 PROBABILITY DISTRIBUTIONS
 http://hamelg.blogspot.com/2015/11/python-for-data-analysis-part-22.html
+https://github.com/Gurubux/ML-Analysis-Steps/blob/master/BasicStatistics/ProbabilityDistributions/PROBABILITY_DISTRIBUTIONS.ipynb
 ------------------------------------------------------------------------
 THE UNIFORM DISTRIBUTION
 ------------------------------------------------------------------------
