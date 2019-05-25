@@ -1,5 +1,5 @@
 CHI-SQUARED TESTS
-
+STATISTICAL TEST FOR CATEGORICAL VARIABLES
 ------------------------------------------------------
 CHI-SQUARED GOODNESS-OF-FIT TEST
 ------------------------------------------------------
