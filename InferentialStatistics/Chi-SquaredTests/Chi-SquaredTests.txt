@@ -3,8 +3,89 @@ STATISTICAL TEST FOR CATEGORICAL VARIABLES
 ------------------------------------------------------
 CHI-SQUARED GOODNESS-OF-FIT TEST
 ------------------------------------------------------
+In our study of t-tests, we introduced the one-way t-test to check whether a sample mean differs from the an expected (population) mean. The chi-squared goodness-of-fit test is an ANALOG of the one-way t-test for categorical variables : 
+		"it tests whether the distribution of sample categorical data matches an expected distribution."
+For example, you could use a chi-squared goodness-of-fit test to check whether the race demographics of members at your church or school match that of the entire U.S. population or whether the computer browser preferences of your friends match those of Internet uses as a whole.
+When working with categorical data, the values themselves aren`t of much use for statistical testing because categories like "male", "female," and "other" have no mathematical meaning. Tests dealing with categorical variables are based on variable COUNTS instead of the actual value of the variables themselves.
+
+Let`s generate some fake demographic data for U.S. and Minnesota and walk through the chi-square goodness of fit test to check whether they are different:
+import numpy as np
+import pandas as pd
+import scipy.stats as stats
+
+national = pd.DataFrame(["white"]*100000 + ["hispanic"]*60000 +\
+                        ["black"]*50000 + ["asian"]*15000 + ["other"]*35000)
+           
+
+minnesota = pd.DataFrame(["white"]*600 + ["hispanic"]*300 + \
+                         ["black"]*250 +["asian"]*75 + ["other"]*150)
+
+national_table = pd.crosstab(index=national[0], columns="count")
+minnesota_table = pd.crosstab(index=minnesota[0], columns="count")
+
+print( "National")
+print(national_table)
+print(" ")
+print( "Minnesota")
+print(minnesota_table)
+>>>
+National
+col_0      count
+0               
+asian      15000
+black      50000
+hispanic   60000
+other      35000
+white     100000
+ 
+Minnesota
+col_0     count
+0              
+asian        75
+black       250
+hispanic    300
+other       150
+white       600
+
+Chi-squared tests are based on the so-called CHI-SQUARED STATISTIC. You calculate the chi-squared statistic with the following formula:
+					    (observed−expected)²			(O − E)²
+				=  Σ ( --------------------- )   = Σ ( ---------- )
+							expected					   E
 
 
+In the formula, observed is the actual observed count for each category and expected is the expected count based on the distribution of the population for the corresponding category. Let's calculate the chi-squared statistic for our data to illustrate:
+
+observed = minnesota_table
+national_ratios = national_table/len(national)  # Get population ratios
+expected = national_ratios * len(minnesota)   # Get expected counts
+chi_squared_stat = (((observed-expected)**2)/expected).sum()
+print(chi_squared_stat)
+>>>
+col_0
+count    18.194805
+dtype: float64
+
+
+#find the critical value for 95% confidence level and check the p-value of our result:
+crit = stats.chi2.ppf(q = 0.95, # Find the critical value for 95% confidence*
+                      df = 4)   # Df = number of variable categories - 1
+
+print("Critical value")
+print(crit)
+
+p_value = 1 - stats.chi2.cdf(x=chi_squared_stat,  # Find the p-value
+                             df=4)
+print("P value")
+print(p_value)
+>>>0.00113047
+"*Note: The chi-squared test assumes none of the expected counts are less than 5."
+"""ddof : int, optional"
+	Delta degrees of freedom”: adjustment to the degrees of freedom for the p-value. The p-value is computed using a chi-squared distribution with k - 1 - ddof degrees of freedom, where k is the number of observed frequencies. The default value of ddof is 0.
+	axisint or None, optional"""
+
+stats.chisquare(f_obs= observed,   # Array of observed counts
+                f_exp= expected)   # Array of expected counts
+>>> Power_divergenceResult(statistic=array([18.19480519]), pvalue=array([0.00113047]))
 ------------------------------------------------------
 CHI-SQUARED TEST OF INDEPENDENCE
 ------------------------------------------------------
