@@ -103,8 +103,8 @@ plt.text(x=1.4, y=0.03, s= round(prob_over_1,3))
 
 
 
-print( stats.norm.ppf(q=0.025) ) # Find the quantile for the 2.5% cutoff
-print( stats.norm.ppf(q=0.975) ) # Find the quantile for the 97.5% cutoff
+print( stats.norm.ppf(q=0.025) ) # Find the quantile for the 2.5% cutoff # -1.95996398454 # ~ -2
+print( stats.norm.ppf(q=0.975) ) # Find the quantile for the 97.5% cutoff # 1.95996398454 # ~  2
 The quantile output above confirms that roughly 5% of the data lies more than 2 standard deviations from the mean.
 
 *Note: a mean of 0 and standard deviation of 1 are default values for the normal distribution.

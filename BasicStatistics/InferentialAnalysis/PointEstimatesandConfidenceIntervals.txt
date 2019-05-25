@@ -197,16 +197,29 @@ for sample in range(25):
  (41.96106406882683, 43.60093593117317),
  (42.43006406882683, 44.06993593117317)] 
 
+
+
 # Plotting multiple Confidence interval based in comparision the true population mean = 43.0023
-plt.figure(figsize=(9,9))
-plt.errorbar(x=np.arange(0.1, 25, 1), 
+plt.figure(figsize=(15,9))
+
+#Similar to confidence interval but Vertical line instead of Shade
+"""plt.errorbar(x=np.arange(0.1, 50, 1), 
              y=sample_means, 
              yerr=[(top-bot)/2 for top,bot in intervals],
-             fmt='o')
-plt.hlines(xmin=0, xmax=25,
+             fmt='o')"""
+#Sample Means Line and points for 50 samples
+plt.plot(np.arange(0.1, 50, 1),np.array([bot+(top-bot)/2 for top,bot in intervals]))
+plt.scatter(np.arange(0.1, 50, 1),np.array([bot+(top-bot)/2 for top,bot in intervals]))
+
+#Population Mean Line # 43.0023
+plt.hlines(xmin=0, xmax=50,
            y=43.0023, 
            linewidth=2.0,
            color="red")
+#Confidence Interval plot for confidence 95 or quantile 0.975
+plt.fill_between(np.arange(0.1, 50, 1), [bot for top,bot in intervals],
+                     [top for top,bot in intervals], alpha=0.1,
+                     color="r")
 ___________________________________________________________________________________________________________________
 ________________________CONFIDENCE INTERVAL - t-critical value - point estimate MEAN_______________________________
 
@@ -319,3 +332,4 @@ stats.norm.interval(alpha = 0.95,    # Confidence level
                    loc =  0.192,     # Point estimate of proportion
                    scale = math.sqrt((p*(1-p))/n))  # Scaling factor
 (0.16758794241348748, 0.21641205758651252)
+
