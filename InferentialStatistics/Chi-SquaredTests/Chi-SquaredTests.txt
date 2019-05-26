@@ -1,7 +1,8 @@
 CHI-SQUARED TESTS
 STATISTICAL TEST FOR CATEGORICAL VARIABLES
+http://hamelg.blogspot.com/2015/11/python-for-data-analysis-part-25-chi.html
 ------------------------------------------------------
-CHI-SQUARED GOODNESS-OF-FIT TEST
+CHI-SQUARED GOODNESS-OF-FIT TEST : stats.chisquare(f_obs= observed, f_exp= expected)  # Array of observed counts
 ------------------------------------------------------
 In our study of t-tests, we introduced the one-way t-test to check whether a sample mean differs from the an expected (population) mean. The chi-squared goodness-of-fit test is an ANALOG of the one-way t-test for categorical variables : 
 		"it tests whether the distribution of sample categorical data matches an expected distribution."
@@ -87,8 +88,9 @@ stats.chisquare(f_obs= observed,   # Array of observed counts
                 f_exp= expected)   # Array of expected counts
 >>> Power_divergenceResult(statistic=array([18.19480519]), pvalue=array([0.00113047]))
 ------------------------------------------------------
-CHI-SQUARED TEST OF INDEPENDENCE
+CHI-SQUARED TEST OF INDEPENDENCE : stats.chi2_contingency(observed= observed)
 ------------------------------------------------------
+https://www.mathsisfun.com/data/chi-square-test.html
 "The chi-squared test of independence tests whether two categorical variables are independent."
 The test of independence is commonly used to determine whether variables like education, political views and other preferences vary based on demographic factors like gender, race and religion.
  For instance, the month you were born probably doesn`t tell you anything about which web browser you use, so we`d expect birth month and browser preference to be independent. 
@@ -155,7 +157,7 @@ print(chi_squared_stat)
 
 crit = stats.chi2.ppf(q = 0.95, # Find the critical value for 95% confidence*
                       df = 8)   # *
-
+"*The degrees of freedom for a test of independence equals the product of the number of categories in each variable minus 1. In this case we have a 5x3 table so df = 4x2 = 8. Multiply (rows − 1) by (columns − 1) "
 print("Critical value")
 print(crit)
 

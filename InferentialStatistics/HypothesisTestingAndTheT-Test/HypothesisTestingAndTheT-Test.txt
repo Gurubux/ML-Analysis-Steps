@@ -205,9 +205,9 @@ plt.fill_between(x=np.arange(intervals[0], intervals[1],0.001),
                  facecolor='red',
                  alpha=0.35)
 
-----------------------------------------------------------------------------------------------------------
-TWO-SAMPLE T-TEST stats.ttest_ind() : T-test for the MEANS OF TWO INDEPENDENT SAMPLES of scores.
-----------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------
+TWO-SAMPLE T-TEST stats.ttest_ind(a= minnesota_ages,b= wisconsin_ages, equal_var=False) : T-test for the MEANS OF TWO INDEPENDENT SAMPLES
+------------------------------------------------------------------------------------------------------------------------------------------
 A two-sample t-test investigates whether the means of two independent data samples differ from one another. In a two-sample test, the null hypothesis is that the means of both groups are the same. Unlike the one sample-test where we test against a known population parameter, the two sample test only involves sample means.
 
 np.random.seed(12)
@@ -225,7 +225,7 @@ Ttest_indResult(statistic=-0.9775980071732967, pvalue=0.33096526170960816)
 
 The test yields a p-value of 0.0907, which means there is a 9% chance we`d see sample data this far apart if the two groups tested are actually identical. If we were using a 95% confidence level we would fail to reject the null hypothesis, since the p-value is greater than the corresponding significance level of 5%.
 ---------------------------------------------------------------------
-PAIRED T-TEST : stats.ttest_rel() : T-test on TWO RELATED samples
+PAIRED T-TEST : stats.ttest_rel(a = before, b = after) : T-test on TWO RELATED samples
 ---------------------------------------------------------------------
 The basic two sample t-test is designed for testing differences between independent groups. In some cases, you might be interested in testing differences between samples of the same group at different points in time. For instance, a hospital might want to test whether a weight-loss drug works by checking the weights of the same group patients before and after treatment. A paired t-test lets you check whether the means of samples from the same group differ.
 We can conduct a paired t-test using the scipy function stats.ttest_rel().
