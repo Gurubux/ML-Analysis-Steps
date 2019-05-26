@@ -1,0 +1,347 @@
+LINEAR REGRESSION
+
+STATISTICAL INFERENCE techniques including the t-test, chi-squared test and ANOVA which let you "ANALYZE DIFFERENCES BETWEEN DATA SAMPLES."
+PREDICTIVE MODELING is a form of machine learning, which describes using computers to "AUTOMATE THE PROCESS OF FINDING PATTERNS" in data.
+------------------------------------------------------
+Linear Regression Basics
+------------------------------------------------------
+The term "regression" in predictive modeling generally refers to any modeling task that involves predicting a real number (as opposed classification, which involves predicting a category or class.).
+The term "linear" in the name linear regression refers to the fact that the method models data with linear combination of the explanatory variables.
+A linear combination is an expression where one or more variables are scaled by a constant factor and added together.
+In the case of linear regression with a single explanatory variable, the linear combination used in linear regression can be expressed as:	  ___________________________________________________	
+ 	 /	RESPONSE = INTERCEPT + CONSTANT ∗ EXPLANATORY 	 /
+	/___________________________________________________/
+	The right side if the equation defines a line with a certain y-intercept and slope times the explanatory variable. 
+IN OTHER WORDS, LINEAR REGRESSION IN ITS MOST BASIC FORM FITS A STRAIGHT LINE TO THE RESPONSE VARIABLE. 
+
+The model is designed to fit a line that minimizes the squared differences (also called errors or residuals.). 
+Since linear regression fits data with a line, it is most effective in cases where the response and explanatory variable have a linear relationship.
+
+EXAMPLE : Use linear regression to predict vehicle gas mileage based on vehicle weight. 
+import numpy as np
+import pandas as pd
+from ggplot import mtcars
+import matplotlib
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+matplotlib.style.use('ggplot')
+
+mtcars.plot(kind="scatter",
+           x="wt",
+           y="mpg",
+           figsize=(9,9),
+           color="black")
+
+from sklearn import linear_model
+
+# Initialize model
+regression_model = linear_model.LinearRegression()
+
+# Train the model using the mtcars data
+regression_model.fit(X = pd.DataFrame(mtcars["wt"]), 
+                     y = mtcars["mpg"])
+
+# Check trained model y-intercept
+print(regression_model.intercept_)
+
+# Check trained model coefficients
+print(regression_model.coef_)
+>>>
+37.2851261673
+[-5.34447157]
+
+" MPG =  37.2851 - 5.3445 * WT."           
+
+
+regression_model.score(X = pd.DataFrame(mtcars["wt"]), y = mtcars["mpg"]) #"R-squared" a value that ranges from 0 to 1 which describes the 																				proportion of variance in the response variable that is 																					explained by the model. In this case, car weight explains 																					roughly 75% of the variance in mpg.
+>>>0.75283279365826461
+
+The R-squared measure is based on the residuals: differences between what the model predicts for each data point and the actual value of each data point. We can extract the model's residuals by making a prediction with the model on the data and then subtracting the actual value from each prediction:
+train_prediction = regression_model.predict(X = pd.DataFrame(mtcars["wt"]))
+
+# Actual - prediction = residuals
+residuals = mtcars["mpg"] - train_prediction
+
+residuals.describe()
+>>>
+count    3.200000e+01
+mean    -5.107026e-15
+std      2.996352e+00
+min     -4.543151e+00
+25%     -2.364709e+00
+50%     -1.251956e-01
+75%      1.409561e+00
+max      6.872711e+00
+Name: mpg, dtype: float64
+
+R-squared is calculated as 1 - (SSResiduals/SSTotal) were SSResiduals is the sum of the squares of the model residuals and SSTotal is the sum of the squares of the difference between each data point and the mean of the data. We could calculate R-squared by hand like this:
+SSResiduals = (residuals**2).sum()
+SSTotal = ((mtcars["mpg"] - mtcars["mpg"].mean())**2).sum()
+
+# R-squared
+1 - (SSResiduals/SSTotal)
+>>>0.75283279365826461
+
+
+#plot the line it fits on our scatterplot to get a sense of how well it fits the data:
+mtcars.plot(kind="scatter",
+           x="wt",
+           y="mpg",
+           figsize=(9,9),
+           color="black",
+           xlim = (0,7))
+
+# Plot regression line
+plt.plot(mtcars["wt"],      # Explanitory variable
+         train_prediction,  # Predicted values
+         color="blue")
+
+"OUTLIER EFFECT"
+mtcars_subset = mtcars[["mpg","wt"]]
+super_car = pd.DataFrame({"mpg":50,"wt":10}, index=["super"])
+new_cars = mtcars_subset.append(super_car)
+# Initialize model
+regression_model = linear_model.LinearRegression()
+# Train the model using the new_cars data
+regression_model.fit(X = pd.DataFrame(new_cars["wt"]), 
+                     y = new_cars["mpg"])
+train_prediction2 = regression_model.predict(X = pd.DataFrame(new_cars["wt"]))
+# Plot the new model
+new_cars.plot(kind="scatter",
+           x="wt",
+           y="mpg",
+           figsize=(9,9),
+           color="black", xlim=(1,11), ylim=(10,52))
+# Plot regression line
+plt.plot(new_cars["wt"],     # Explanatory variable
+         train_prediction2,  # Predicted values
+         color="blue")
+
+"Normality of residuals :  Q-Q (quantile-quantile) plot." : stats.probplot()
+plt.figure(figsize=(9,9))
+
+stats.probplot(residuals, dist="norm", plot=plt)
+
+When residuals are normally distributed, they tend to lie along the straight line on the Q-Q plot. In this case residuals appear to follow a slightly non-linear pattern: the residuals are bowed a bit away from the normality line on each end. This is an indication that simple straight line might not be sufficient to fully describe the relationship between weight and mpg.
+
+
+"Evaluation RMSE"
+def rmse(predicted, targets):
+    """
+    Computes root mean squared error of two numpy ndarrays
+    
+    Args:
+        predicted: an ndarray of predictions
+        targets: an ndarray of target values
+    
+    Returns:
+        The root mean squared error as a float
+    """
+    return (np.sqrt(np.mean((targets-predicted)**2)))
+
+rmse(train_prediction, mtcars["mpg"])
+>>>2.9491626859550282
+or
+
+from sklearn.metrics import mean_squared_error
+RMSE = mean_squared_error(train_prediction, mtcars["mpg"])**0.5
+
+RMSE
+>>>2.9491626859550282
+------------------------------------------------------
+Polynomial Regression
+------------------------------------------------------
+Variables often exhibit non-linear relationships that can`t be fit well with a straight line. In these cases, we can use linear regression to fit a curved line the data by adding extra higher order terms (squared, cubic, etc.) to the model. A linear regression that involves higher order terms is known as "polynomial regression."
+
+# Initialize model
+poly_model = linear_model.LinearRegression()
+
+# Make a DataFrame of predictor variables
+predictors = pd.DataFrame([mtcars["wt"],           # Include weight
+                           mtcars["wt"]**2]).T     # Include weight squared
+
+# Train the model using the new_cars data
+poly_model.fit(X = predictors, 
+               y = mtcars["mpg"])
+
+# Check trained model y-intercept
+print("Model intercept")
+print(poly_model.intercept_)
+
+# Check trained model coefficients (scaling factor given to "wt")
+print("Model Coefficients")
+print(poly_model.coef_)
+
+# Check R-squared
+poly_model.score(X = predictors, 
+                 y = mtcars["mpg"])
+>>>
+Model intercept
+49.93081094945181
+Model Coefficients
+[-13.38033708   1.17108689]
+0.8190613581384095 # LR Rsquare >>>0.75283279365826461 Increased so better
+
+
+# Plot the curve from 1.5 to 5.5
+poly_line_range = np.arange(1.5, 5.5, 0.1)
+
+# Get first and second order predictors from range
+poly_predictors = pd.DataFrame([poly_line_range,
+                               poly_line_range**2]).T
+
+# Get corresponding y values from the model
+y_values = poly_model.predict(X = poly_predictors)
+
+mtcars.plot(kind="scatter",
+           x="wt",
+           y="mpg",
+           figsize=(9,9),
+           color="black",
+           xlim = (0,7))
+
+# Plot curve line
+plt.plot(poly_line_range,   # X-axis range
+         y_values,          # Predicted values
+         color="blue")
+
+preds = poly_model.predict(X=predictors)
+rmse(preds , mtcars["mpg"])
+>>>2.5233004724610786  # LR RMSE 2.9491626859550282 - Reduced so Better
+
+
+
+"OVERFITTING"
+# Initialize model
+poly_model = linear_model.LinearRegression()
+
+# Make a DataFrame of predictor variables
+predictors = pd.DataFrame([mtcars["wt"],           
+                           mtcars["wt"]**2,
+                           mtcars["wt"]**3,
+                           mtcars["wt"]**4,
+                           mtcars["wt"]**5,
+                           mtcars["wt"]**6,
+                           mtcars["wt"]**7,
+                           mtcars["wt"]**8,
+                           mtcars["wt"]**9,
+                           mtcars["wt"]**10]).T     
+
+# Train the model using the new_cars data
+poly_model.fit(X = predictors, 
+               y = mtcars["mpg"])
+
+# Check trained model y-intercept
+print("Model intercept")
+print(poly_model.intercept_)
+
+# Check trained model coefficients (scaling factor given to "wt")
+print("Model Coefficients")
+print(poly_model.coef_)
+
+# Check R-squared
+poly_model.score(X = predictors, 
+                 y = mtcars["mpg"])
+
+>>>Model intercept
+-14921.120647946558
+Model Coefficients
+[ 6.45813583e+04 -1.20086135e+05  1.26931932e+05 -8.46598480e+04
+  3.73155209e+04 -1.10334758e+04  2.16590409e+03 -2.70730550e+02
+  1.94974165e+01 -6.15515447e-01]
+0.8702106585933677
+
+
+p_range = np.arange(1.5, 5.45, 0.01)
+
+poly_predictors = pd.DataFrame([p_range, p_range**2, p_range**3,
+                              p_range**4, p_range**5, p_range**6, p_range**7, 
+                              p_range**8, p_range**9, p_range**10]).T  
+
+# Get corresponding y values from the model
+y_values = poly_model.predict(X = poly_predictors)
+
+mtcars.plot(kind="scatter",
+           x="wt",
+           y="mpg",
+           figsize=(9,9),
+           color="black",
+           xlim = (0,7))
+
+# Plot curve line
+plt.plot(p_range,   # X-axis range
+         y_values,          # Predicted values
+         color="blue")
+ Notice how the 10th order polynomial model curves wildly in some places to fit the training data. While this model happens to yield a closer fit to the training data, it will almost certainly fail to generalize well to new data as it leads to absurd predictions such as a car having less than 0 mpg if it weighs 5000lbs.
+------------------------------------------------------
+Multiple Linear Regression
+------------------------------------------------------
+When faced with a predictive modeling task, you`ll often have several variables in your data that may help explain variation in the response variable. You can include more explanatory variables in a linear regression model by including more columns in the data frame you pass to the model training function. Let`s make a new model that adds the horsepower variable to our original model:
+# Initialize model
+multi_reg_model = linear_model.LinearRegression()
+
+# Train the model using the mtcars data
+multi_reg_model.fit(X = mtcars.ix[:,["wt","hp"]], 
+                     y = mtcars["mpg"])
+
+# Check trained model y-intercept
+print(multi_reg_model.intercept_)
+
+# Check trained model coefficients (scaling factor given to "wt")
+print(multi_reg_model.coef_)
+
+# Check R-squared
+multi_reg_model.score(X = mtcars.ix[:,["wt","hp"]], 
+                      y = mtcars["mpg"])
+>>>
+37.2272701164
+[-3.87783074 -0.03177295]
+
+0.8267854518827914
+
+The improved R-squared score suggests horsepower has a linear relationship with mpg. Let`s investigate with a plot:
+
+from sklearn.preprocessing import StandardScaler
+sc_X = StandardScaler()
+
+data_clean = pd.DataFrame(sc_X.fit_transform(mtcars.iloc[:,1:]), columns = mtcars.iloc[:,1:].columns)
+plt.scatter(data_clean.wt,data_clean.mpg,color="black",norm=True)
+plt.scatter(data_clean.hp,data_clean.mpg,color="blue",norm=True)  
+"""    mtcars.plot(kind="scatter",
+           x="hp",
+           y="mpg",
+           figsize=(9,9),
+           color="black")
+mtcars.plot(kind="scatter",
+           x="hp",
+           y="mpg",
+           figsize=(9,9),
+           color="blue")"""
+plt.show()
+
+
+
+# Initialize model
+multi_reg_model = linear_model.LinearRegression()
+# Include squared terms
+poly_predictors = pd.DataFrame([mtcars["wt"],
+                                mtcars["hp"],
+                                mtcars["wt"]**2,
+                                mtcars["hp"]**2]).T
+# Train the model using the mtcars data
+multi_reg_model.fit(X = poly_predictors, 
+                    y = mtcars["mpg"])
+# Check R-squared
+print("R-Squared")
+print( multi_reg_model.score(X = poly_predictors , 
+                      y = mtcars["mpg"]) )
+# Check RMSE
+print("RMSE")
+print(rmse(multi_reg_model.predict(poly_predictors),mtcars["mpg"]))
+
+
+The new R-squared and lower RMSE suggest this is a better model than any we made previously and we wouldn`t be too concerned about overfitting since it only includes 2 variables and 2 squared terms. Note that when working with multidimensional models, it becomes difficult to visualize results, so you rely heavily on numeric output.
+We could continue adding more explanatory variables in an attempt to improve the model. Adding variables that have little relationship with the response or including variables that are too closely related to one another can hurt your results when using linear regression. You should also be wary of numeric variables that take on few unique values since they often act more like categorical variables than numeric ones.
+
+
+
