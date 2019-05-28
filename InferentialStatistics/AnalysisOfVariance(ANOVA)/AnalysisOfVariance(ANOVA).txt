@@ -1,6 +1,137 @@
 ANALYSIS OF VARIANCE (ANOVA)
+The t-test is used for checking whether the means of TWO groups differ. The t-test works well when dealing with two groups, but sometimes we want to compare more than two groups at the same time.
+For example, if we wanted to test whether voter age differs based on some categorical variable like race, we have to compare the means of each level or group the variable. We could carry out a separate t-test for each pair of groups, but when you conduct many tests you increase the chances of false positives. 
+The analysis of variance or ANOVA is a statistical inference test that lets you compare multiple groups at the same time.
+------------------------------------------------------
+ONE-WAY ANOVA : stats.f_oneway(asian, black, hispanic, other, white)  
+			  : stats.multicomp.pairwise_tukeyhsd(endog=voter_age,     # Data
+                          		   				  groups=voter_race,   # Groups
+                          		   				  alpha=0.05)          # Significance level
+------------------------------------------------------
+The one-way ANOVA tests whether the MEAN of some numeric variable differs across the levels of one categorical variable.
+It essentially answers the question: do any of the group means differ from one another?
+The process is similar: you go through several calculations to arrive at a test statistic and then you compare the test statistic to a critical value based on a probability distribution.
+ In the case of the ANOVA, you use the "f-distribution".
 
-------------------------------------------------------
-ONE-WAY ANOVA
-------------------------------------------------------
+
+np.random.seed(12)
+races =   ["asian","black","hispanic","other","white"]
+# Generate random data
+voter_race = np.random.choice(a= races,
+                              p = [0.05, 0.15 ,0.25, 0.05, 0.5],
+                              size=1000)
+voter_age = stats.poisson.rvs(loc=18,
+                              mu=30,
+                              size=1000)
+# Group age data by race
+voter_frame = pd.DataFrame({"race":voter_race,"age":voter_age})
+groups = voter_frame.groupby("race").groups
+# Etract individual groups
+asian = voter_age[groups["asian"]]
+black = voter_age[groups["black"]]
+hispanic = voter_age[groups["hispanic"]]
+other = voter_age[groups["other"]]
+white = voter_age[groups["white"]]
+# Perform the ANOVA
+stats.f_oneway(asian, black, hispanic, other, white)
+>>>F_onewayResult(statistic=1.7744689357289216, pvalue=0.13173183202014213)
+"The test output yields an F-statistic of 1.774 and a p-value of 0.1317, indicating that there is no significant difference between the means of each group."
+--------------------------------------------------------------------------------------------
+np.random.seed(12)
+# Generate random data
+voter_race = np.random.choice(a= races,
+                              p = [0.05, 0.15 ,0.25, 0.05, 0.5],
+                              size=1000)
+# Use a different distribution for white ages
+white_ages = stats.poisson.rvs(loc=18, 
+                              mu=32,
+                              size=1000)
+voter_age = stats.poisson.rvs(loc=18,
+                              mu=30,
+                              size=1000)
+voter_age = np.where(voter_race=="white", white_ages, voter_age)
+# Group age data by race
+voter_frame = pd.DataFrame({"race":voter_race,"age":voter_age})
+groups = voter_frame.groupby("race").groups   
+# Extract individual groups
+asian = voter_age[groups["asian"]]
+black = voter_age[groups["black"]]
+hispanic = voter_age[groups["hispanic"]]
+other = voter_age[groups["other"]]
+white = voter_age[groups["white"]]
+# Perform the ANOVA
+stats.f_oneway(asian, black, hispanic, other, white)
+>>>F_onewayResult(statistic=10.164699828384288, pvalue=4.5613242114167168e-08)
+"The test result suggests the groups don't have the same sample means in this case, since the p-value is significant at a 99% confidence level. We know that it is the white voters who differ because we set it up that way in the code, but when testing real data, you may not know which group(s) caused the test to throw a positive result. To check which groups differ after getting a positive ANOVA result, you can perform a follow up test or `POST-HOC TEST`."
+
+
+1. One post-hoc test is to perform a separate t-test for each pair of groups. You can perform a t-test between all pairs using by running each pair through the stats.ttest_ind() we covered in the lesson on t-tests:
+# Get all race pairs
+race_pairs = []
+for race1 in range(4):
+    for race2  in range(race1+1,5):
+        race_pairs.append((races[race1], races[race2]))
+# Conduct t-test on each pair
+for race1, race2 in race_pairs: 
+    print(race1, race2)
+    print(stats.ttest_ind(voter_age[groups[race1]], 
+                          voter_age[groups[race2]]))    
+>>>
+asian black
+Ttest_indResult(statistic=0.83864469097479799, pvalue=0.4027281369339345)
+asian hispanic
+Ttest_indResult(statistic=-0.42594691924932293, pvalue=0.67046690042407264)
+asian other
+Ttest_indResult(statistic=0.97952847396359999, pvalue=0.32988775000951509)
+asian white
+Ttest_indResult(statistic=-2.3181088112522881, pvalue=0.020804701566400217)
+black hispanic
+Ttest_indResult(statistic=-1.9527839210712925, pvalue=0.051561971719525937)
+black other
+Ttest_indResult(statistic=0.28025754367057176, pvalue=0.77957701111176592)
+black white
+Ttest_indResult(statistic=-5.3793038812818352, pvalue=1.039421216662395e-07)
+hispanic other
+Ttest_indResult(statistic=1.5853626170340225, pvalue=0.11396630528484335)
+hispanic white
+Ttest_indResult(statistic=-3.5160312714115376, pvalue=0.00046412986490666839)
+other white
+Ttest_indResult(statistic=-3.7638093220778721, pvalue=0.00018490576317593065)
+
+
+
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
+tukey = pairwise_tukeyhsd(endog=voter_age,     # Data
+                          groups=voter_race,   # Groups
+                          alpha=0.05)          # Significance level
+tukey.plot_simultaneous()    # Plot group confidence intervals
+plt.vlines(x=49.57,ymin=-0.5,ymax=4.5, color="red")
+
+tukey.summary()              # See test summary
+
+
+>>>
+Multiple Comparison of Means - Tukey 
+					HSD,FWER=0.05
+group1		group2		meandiff	lower	upper	reject
+asian		black		-0.8032		-3.4423	1.836	False
+asian		hispanic	0.4143		-2.1011	2.9297	False
+asian		other		-1.0645		-4.2391	2.11	False
+asian		white		1.9547		-0.4575	4.3668	False
+black		hispanic	1.2175		-0.386	2.821	False
+black		other		-0.2614		-2.7757	2.253	False
+black		white		2.7579		1.3217	4.194	"True"
+hispanic	other		-1.4789		-3.863	0.9053	False
+hispanic	white		1.5404		0.3468	2.734	"True"
+other		white		3.0192		0.7443	5.2941	"True"
+
+
+
+
+
+
+
+
+
+
 
