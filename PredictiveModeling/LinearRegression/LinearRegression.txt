@@ -8,10 +8,11 @@ Linear Regression Basics
 The term "regression" in predictive modeling generally refers to any modeling task that involves predicting a real number (as opposed classification, which involves predicting a category or class.).
 The term "linear" in the name linear regression refers to the fact that the method models data with linear combination of the explanatory variables.
 A linear combination is an expression where one or more variables are scaled by a constant factor and added together.
-In the case of linear regression with a single explanatory variable, the linear combination used in linear regression can be expressed as:	  ___________________________________________________	
+In the case of linear regression with a single explanatory variable, the linear combination used in linear regression can be expressed as:
+	  ___________________________________________________	
  	 /	RESPONSE = INTERCEPT + CONSTANT ∗ EXPLANATORY 	 /
 	/___________________________________________________/
-	The right side if the equation defines a line with a certain y-intercept and slope times the explanatory variable. 
+	The right side of the equation defines a line with a certain y-intercept and slope times the explanatory variable. 
 IN OTHER WORDS, LINEAR REGRESSION IN ITS MOST BASIC FORM FITS A STRAIGHT LINE TO THE RESPONSE VARIABLE. 
 
 The model is designed to fit a line that minimizes the squared differences (also called errors or residuals.). 
