@@ -1,0 +1,115 @@
+-------------------------
+CORRELATION COEFFICIENT - https://www.spss-tutorials.com/pearson-correlation-coefficient/
+-------------------------
+Correlation Coefficient - Basics
+Some basic points regarding correlation coefficients are nicely illustrated by the previous figure. The least you should know is that
+
+Correlations are never lower than -1. A correlation of -1 indicates that the data points in a scatter plot lie exactly on a straight descending line; the two variables are perfectly negatively linearly related.
+A correlation of 0 means that two variables don`t have any linear relation whatsoever. However, some non linear relation may exist between the two variables.
+Correlation coefficients are never higher than 1. A correlation coefficient of 1 means that two variables are perfectly positively linearly related; the dots in a scatter plot lie exactly on a straight ascending line.
+
+----------------------------------------------------------------------------------------------------
+Questions to ask.
+1. Is the price of a car related to engine horse power OR is the target variable related to the chosen independent variable ? 
+2. If yes, how strong is the relationship ?
+3. Is the relationship linear ? 
+4. Can we estimate the target variable from the chosen independent variable ? 
+
+ANSWER 1 and 2
+
+To answer first two, we need to carry out the Pearsons correlation coefficient
+Ranges from -1 to 1
+    -1 = Perfect inverse relation (descending)
+     0 = No relation whatsoever 
+     1 = Perfect Linear Relation (ascending)
+
+from scipy.stats.stats import pearsonr
+pearsonr(data['horsepower'], data['price']) # pearsonr(independent_var, dependent_var)
+
+
+CORRELATION
+A correlation is a statistical measure of the relationship between two variables. The measure is best used in variables that demonstrate a linear relationship between each other. The fit of the data can be visually represented in a scatterplot.
+
+The correlation COEFFICIENT is a value that indicates the strength of the relationship. The coefficient can take any values from -1 to 1. The interpretations of the values are:
+    -1: Perfect negative correlation. The variables tend to move in opposite directions (i.e., when one variable increases, the other variable decreases).
+    0 : No correlation. The variables do not have a relationship with each other.
+    1 : Perfect positive correlation. The variables tend to move in the same direction (i.e., when one variable increases, the other variable also increases).
+
+If two variables are correlated, it does not imply that one variable causes the changes in another variable. Correlation only assesses relationships between variables, and there may be different factors that lead to the relationships. CAUSATION may be a reason for the correlation, but it is not the only possible explanation.
+CORRELATION FORMULAE
+     __________________________________________  
+    /           Σ (xᵢ - x̅) (yᵢ - ȳ)              /
+   / r(xy) = ______________________________  / 
+  /           _________________________     /
+ /           √(Σ (xᵢ - x̅)² Σ(yᵢ - ȳ)²)     / 
+/_________________________________________/
+    rxy – the correlation coefficient of the linear relationship between the variables x and y
+    xᵢ – the values of the x-variable in a sample
+    x̅ – the mean of the values of the x-variable
+    yᵢ – the values of the y-variable in a sample
+    ȳ – the mean of the values of the y-variable
+
+
+
+COVARIANCE
+Covariance is a measure of the relationship between two random variables. The metric evaluates how much – to what extent – the variables change together. In other words, it is essentially a measure of the variance between two variables (note that the variance of one variable equals the variance of the other variable). However, the metric does not assess the dependency between variables.
+Unlike the correlation coefficient, covariance is measured in units. The units are computed by multiplyᵢng the units of the two variables. The variance can take any positive or negative values. The values are interpreted as follows:
+    Positive covariance: Indicates that two variables tend to move in the same direction.
+    Negative covariance: Reveals that two variables tend to move in inverse directions.
+
+    __________________________________________    __________________________________________
+   /                Σ (xᵢ - x̅) (yᵢ - ȳ)      /   /              Σ (xᵢ - x̅) (yᵢ - ȳ)        /
+  / Cov(x,y) = ___________________________  /   / Cov(x,y) = ___________________________  /   
+ /                      n                  /   /                        n-1              / 
+/_________________________________________/   /_________________________________________/
+        Population COVARIANCE                               Sample COVARIANCE
+
+
+COVARIANCE VS. CORRELATION
+Covariance and correlation both primarily assess the relationship between variables. The closest analogy to the relationship between them is the relationship between the variance and standard deviation.
+
+Covariance measures the total variation of two random variables from their expected values. Using covariance, we can only gauge the direction of the relationship (whether the variables tend to move in tandem or show an inverse relationship). However, it does not indicate the strength of the relationship, nor the dependency between the variables.
+
+On the other hand, correlation measures the strength of the relationship between variables. Correlation is the scaled measure of covariance. It is dimensionless. In other words, the correlation coefficient is always a pure value and not measured in any units.
+
+The relationship between the two concepts can be expressed using the formula below:
+        _____________________________
+       /            Cov(x,y)        /
+      / p(X,Y) = __________        / 
+     /              σx σy         /
+    /____________________________/
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+------------------------------------------
+CORRELATION COEFFICIENT MATRIX PLOTTING
+------------------------------------------
+> Below are correlation values between the features finally selected.
+corr = data_clean.corr()
+
+## Type 1
+def plot_Correlation_Coefficient_1(corr):
+    sns.set_context(context='notebook')
+    fig, ax = plt.subplots(figsize=(10,10)) 
+
+    # Generate a mask for the upper triangle
+    mask = np.zeros_like(corr, dtype=np.bool)
+    mask[np.tril_indices_from(mask)] = True
+
+    # Generate a custom diverging colormap
+    cmap = sns.diverging_palette(220, 10, as_cmap=True)
+
+    sns.heatmap(corr, cmap=cmap,linewidths=1, vmin=-1, vmax=1, square=True, cbar=True, center=0, ax=ax, mask=mask)
+    plt.show()
+
+## Type 2
+def plot_Correlation_Coefficient_2(corr):
+    sns.heatmap(corr, vmax=.8, square=True);
+    plt.show()
+
+
+---------------------------------------------------------------------------------
+http://www.stat.yale.edu/Courses/1997-98/101/correl.htm
+https://www.spss-tutorials.com/pearson-correlation-coefficient/
+https://github.com/llSourcell/LoanDefault-Prediction/blob/master/Loan_Default_Prediction_Final.ipynb
+https://github.com/Gurubux/Data-Lit/blob/master/2-StatisticsAndProbability/2.1-CreditScoring/Loan_Default_Prediction.ipynb
