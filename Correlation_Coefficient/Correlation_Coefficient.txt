@@ -1,6 +1,7 @@
--------------------------
-CORRELATION COEFFICIENT - https://www.spss-tutorials.com/pearson-correlation-coefficient/
--------------------------
+----------------------------------------------------------------------------------------------------
+CORRELATION COEFFICIENT 
+---------------------------------------------------------------------------
+- https://www.spss-tutorials.com/pearson-correlation-coefficient/
 Correlation Coefficient - Basics
 Some basic points regarding correlation coefficients are nicely illustrated by the previous figure. The least you should know is that
 
