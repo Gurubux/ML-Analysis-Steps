@@ -88,7 +88,7 @@ CORRELATION COEFFICIENT MATRIX PLOTTING
 > Below are correlation values between the features finally selected.
 corr = data_clean.corr()
 
-## Type 1
+## Type 1 # https://github.com/Gurubux/Data-Lit/blob/master/2-StatisticsAndProbability/2.1-CreditScoring/Loan_Default_Prediction.ipynb
 def plot_Correlation_Coefficient_1(corr):
     sns.set_context(context='notebook')
     fig, ax = plt.subplots(figsize=(10,10)) 
@@ -103,7 +103,7 @@ def plot_Correlation_Coefficient_1(corr):
     sns.heatmap(corr, cmap=cmap,linewidths=1, vmin=-1, vmax=1, square=True, cbar=True, center=0, ax=ax, mask=mask)
     plt.show()
 
-## Type 2
+## Type 2 # https://github.com/Gurubux/CognitiveClass-ML/blob/master/Course/3-Regression/3.3MultipleLinearRegression/Board_Game_Review_Prediction__SimpleANDMultipleRegression.ipynb
 def plot_Correlation_Coefficient_2(corr):
     sns.heatmap(corr, vmax=.8, square=True);
     plt.show()
