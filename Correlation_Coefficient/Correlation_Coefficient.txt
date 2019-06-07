@@ -116,3 +116,4 @@ https://github.com/llSourcell/LoanDefault-Prediction/blob/master/Loan_Default_Pr
 https://github.com/Gurubux/Data-Lit/blob/master/2-StatisticsAndProbability/2.1-CreditScoring/Loan_Default_Prediction.ipynb
 https://github.com/Gurubux/CognitiveClass-ML/blob/master/Course/3-Regression/3.3MultipleLinearRegression/Board_Game_Review_Prediction__SimpleANDMultipleRegression.ipynb
 https://github.com/Gurubux/Eduonix-ML/blob/master/1-Regression/BoardGameLinearRANDRandomForestR/Board%20Game%20Review%20Predictions/Board%20Game%20Review%20Prediction%20(Jupyter%20Notebook).ipynb
+https://stats.stackexchange.com/questions/119835/correlation-between-a-nominal-iv-and-a-continuous-dv-variable
