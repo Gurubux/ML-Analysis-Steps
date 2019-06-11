@@ -2,12 +2,12 @@ ANALYSIS OF VARIANCE (ANOVA)
 The t-test is used for checking whether the means of TWO groups differ. The t-test works well when dealing with two groups, but sometimes we want to compare more than two groups at the same time.
 For example, if we wanted to test whether voter age differs based on some categorical variable like race, we have to compare the means of each level or group the variable. We could carry out a separate t-test for each pair of groups, but when you conduct many tests you increase the chances of false positives. 
 The analysis of variance or ANOVA is a statistical inference test that lets you compare multiple groups at the same time.
-------------------------------------------------------
+------------------------------------------------------------------------------------------------------------
 ONE-WAY ANOVA : stats.f_oneway(asian, black, hispanic, other, white)  
 			  : stats.multicomp.pairwise_tukeyhsd(endog=voter_age,     # Data
                           		   				  groups=voter_race,   # Groups
                           		   				  alpha=0.05)          # Significance level
-------------------------------------------------------
+------------------------------------------------------------------------------------------------------------
 The one-way ANOVA tests whether the MEAN of some numeric variable differs across the levels of one categorical variable.
 It essentially answers the question: do any of the group means differ from one another?
 The process is similar: you go through several calculations to arrive at a test statistic and then you compare the test statistic to a critical value based on a probability distribution.

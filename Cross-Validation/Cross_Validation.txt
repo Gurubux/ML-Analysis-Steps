@@ -13,7 +13,7 @@ Example : Consider 4 blocks of data : Total Data : |--1-25%--|--2-25%--|--3-25%-
 		We can consider each sample as a test data, 'LEAVE ONE OUT CROSS VALIDATION'
 		TEN-FOLD CROSS VALIDATION is a common practice
 ------------------------------------------------------------------------------------------------------------------------------------
-#https://github.com/Gurubux/Udemy-ML/blob/master/Machine_Learning_A-Z/Part2-Regression/Cross-Validation/Cross_Validation_Practice.ipynb
+#https://github.com/Gurubux/ML-Analysis-Steps/blob/master/Cross-Validation/Cross_Validation_Practice.ipynb
 rf_class = RandomForestClassifier(n_estimators=10)
 log_class = LogisticRegression()
 svm_class = svm.SVC()
