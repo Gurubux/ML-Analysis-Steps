@@ -18,3 +18,7 @@ Section 7: Predictive Modeling
             28: Logistic Regression
             29: Decision Trees
             30: Random Forests
+            
+</br>
+PS : 
+To Open .ipynb files (If unable to view on github) copy link of file.ipynb and paste it on the web site https://nbviewer.jupyter.org/       
