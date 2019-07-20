@@ -14,9 +14,9 @@ EXAMPLE
 
 
 				  PREDICTED
-				          N    P
+				    N    P
 ACTUAL		N 	 [ TN   FP
-			    P      FN   TP ]
+			P      FN   TP ]
 
 	 3 values (BJP//Congress/NOTA, Run/Walk/Stand) 
 	 BJP  Congress NOTA
