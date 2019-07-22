@@ -90,7 +90,8 @@ stats.chisquare(f_obs= observed,   # Array of observed counts
 ------------------------------------------------------
 CHI-SQUARED TEST OF INDEPENDENCE : stats.chi2_contingency(observed= observed)
 ------------------------------------------------------
-https://www.mathsisfun.com/data/chi-square-test.html
+"https://codingdisciple.com/chi-squared-python.html"
+"https://www.mathsisfun.com/data/chi-square-test.html"
 "The chi-squared test of independence tests whether two categorical variables are independent."
 The test of independence is commonly used to determine whether variables like education, political views and other preferences vary based on demographic factors like gender, race and religion.
  For instance, the month you were born probably doesn`t tell you anything about which web browser you use, so we`d expect birth month and browser preference to be independent. 

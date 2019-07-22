@@ -115,9 +115,11 @@ ACCURACY            = tp + tn / (Total)
 
 ----------------------------------------------------------------------------------
 "https://github.com/Gurubux/Data-Lit/blob/master/2-StatisticsAndProbability/2.1-CreditScoring/Loan_Default_Prediction.ipynb"
-def plot_confusion_matrix2(model, normalize=False): # This function prints and plots the confusion matrix.
-    cm = confusion_matrix(y_test, model, labels=[0, 1])
-    classes=["Will Pay", "Will Default"]
+import itertools
+from sklearn.metrics import confusion_matrix
+def plot_confusion_matrix2(y_true,y_pred, normalize=False): # This function prints and plots the confusion matrix.
+    cm = confusion_matrix(y_true, y_pred, labels=[0, 1])
+    classes=["Admitted", "NotAdmitted"]
     cmap = plt.cm.Blues
     title = "Confusion Matrix"
     if normalize:
@@ -138,7 +140,8 @@ def plot_confusion_matrix2(model, normalize=False): # This function prints and p
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
 
-plot_confusion_matrix2(rfPredict, normalize=True)
+predictions_ = estimator.predict(X_test) #for Confusion Matrix
+plot_confusion_matrix2(y_true,predictions_, normalize=True)
 
 
 

@@ -1,4 +1,4 @@
-"https://github.com/Gurubux/Udemy-ML/blob/master/Machine_Learning_A-Z/Part2-Regression/ROC_AUC/ROC_AUC.ipynb"
+"https://github.com/Gurubux/ML-Analysis-Steps/blob/master/ROC_AUC/ROC_AUC.ipynb"
 ------------------------------------------------------------------------------------------
 AREA UNDER THE RECEIVER OPERATING CHARACTERISTIC CURVE ( AUC ROC  )
 ------------------------------------------------------------------------------------------
@@ -75,3 +75,31 @@ def plot_roc_curve(fpr, tpr):
 --------------------------------------------------------------------------
 #https://github.com/Gurubux/Data-Lit/blob/master/2-StatisticsAndProbability/2.1-CreditScoring/Loan_Default_Prediction.ipynb
 plotAUC()
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+PRECISION-RECALL CURVE -  SENSITIVITY-SPECIFICITY-PRECISION-ACCURACY (precision_recall_curve, AUC, average_precision_score, f1_score)
+    from sklearn.metrics import precision_recall_curve,f1_score,auc,average_precision_score
+    
+    # calculate precision-recall curve(y-true,y_score(probs))
+    precision, recall, thresholds = precision_recall_curve(y_test, probs)
+    
+    # calculate precision-recall AUC
+    auc = auc(recall, precision)
+
+    # calculate average precision score (y_true,y_score(prob)) = Σ(Rₙ - Rₙ₋₁)/Pₙ 
+    # where Pₙ and Rₙ are the precision and recall at the nᵗʰ threshold.
+    ap = average_precision_score(y_test, pred_test) 
+    
+    # calculate F1 score - F1 = 2 * (precision * recall) / (precision + recall)
+    f1 = f1_score(y_test, pred_test)
+    
+    def plot_precision_recall_curve(recall,precision):
+        # plot no skill
+        plt.plot([0, 1], [0.5, 0.5], linestyle='--')
+        # plot the precision-recall curve for the model
+        plt.plot(recall, precision, marker='.')
+        # show the plot
+        plt.show()
+    plot_precision_recall_curve(recall,precision)
